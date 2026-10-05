@@ -1,3 +1,31 @@
+## Completed exercises
+
+This branch includes both the repository exercises (`todo`, `validate`) and
+`Homework6_en.md` (`config`). The written report is submitted separately.
+
+- `todo`: JSON save/load with wrapped errors; the original specification tests remain unchanged.
+- `validate`: basic email syntax and 10–15 ASCII phone digits with an optional leading `+`.
+- `config`: JSON tags, save/load, port/environment validation, streaming JSON,
+  injectable `FileStorage`, and handwritten mocks for filesystem failures.
+- Configuration validation is explicit: call `ValidateConfig` separately from save/load.
+  Passwords never enter JSON; an empty database URL is omitted.
+
+Run from this directory:
+
+```bash
+go test -v ./...
+go test -coverprofile=cover.out ./...
+go tool cover -func=cover.out
+go tool cover -html=cover.out
+go vet ./...
+```
+
+The first implementation commit uses `MarshalIndent`/`Unmarshal`; the next
+refactors configuration persistence to `Encoder`/`Decoder` while retaining its tests.
+CI checks both the original exercises and total coverage above 80%.
+
+---
+
 # Go with GenAI — Lesson 6 homework
 
 **Lesson 6. File I/O, JSON and Testing: a triad of production-ready code**

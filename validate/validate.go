@@ -1,34 +1,32 @@
-// Package validate provides simple syntactic validators for common
-// user-input formats.
-//
-// Homework — Task 2 (Lesson 6: File I/O, JSON and Testing):
-// Implement ValidateEmail and/or ValidatePhone below (your mentor may
-// ask for just one) and extend the test tables in validate_test.go to
-// at least 8 cases each, including edge cases.
+// Package validate provides basic syntax checks, not deliverability checks.
 package validate
 
-// ValidateEmail reports whether s is a syntactically valid email address.
-//
-// TODO: implement this function. At minimum it should:
-//   - reject the empty string,
-//   - require exactly one "@" with a non-empty local part and domain part,
-//   - reject values containing whitespace.
-//
-// Document any additional decisions you make (e.g. how you handle a
-// trailing dot, consecutive dots, or unicode characters) in a comment
-// here, and add matching test cases in validate_test.go.
+import (
+	"strings"
+	"unicode"
+)
+
+// ValidateEmail requires one @, nonempty parts and no Unicode whitespace.
+// Unicode letters and local domains are accepted; full RFC validation is out of scope.
 func ValidateEmail(s string) bool {
-	// TODO: implement me
-	return false
+	if strings.Count(s, "@") != 1 || strings.ContainsFunc(s, unicode.IsSpace) {
+		return false
+	}
+	local, domain, _ := strings.Cut(s, "@")
+	return local != "" && domain != ""
 }
 
-// ValidatePhone reports whether s is a syntactically valid phone number.
-//
-// TODO: implement this function. Decide which format(s) you accept
-// (e.g. "+380501234567", "050-123-4567") and document your decision
-// here. At minimum it should reject the empty string and any value
-// containing letters.
+// ValidatePhone accepts 10–15 ASCII digits with an optional leading +.
+// Spaces, separators, letters and Unicode digits are rejected.
 func ValidatePhone(s string) bool {
-	// TODO: implement me
-	return false
+	s = strings.TrimPrefix(s, "+")
+	if len(s) < 10 || len(s) > 15 {
+		return false
+	}
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return true
 }

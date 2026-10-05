@@ -1,4 +1,4 @@
-.PHONY: test test-verbose cover vet fmt
+.PHONY: test test-verbose cover cover-html vet fmt
 
 # Run all tests (same as CI, minus the coverage gate and job summary).
 test:
